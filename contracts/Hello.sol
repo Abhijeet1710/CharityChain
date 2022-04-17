@@ -27,6 +27,7 @@ contract Hello {
 
     //POJO for Charity Organisation
     struct CharityProject{
+        uint projectId;
         string projectName;
         address createrAddress;
         string projectDescription;
@@ -34,32 +35,70 @@ contract Hello {
         bool isCompleted;
         uint amountGot;
         bool isApproved;
-
     }
 
     //Organiser / Admin (Who created this Smart Contract)
-    Admin private admin;
+    Admin public admin;
     
     mapping(address => Donor) public donors;
+    
     mapping(address => Benifactor) public benifactors;
+
     mapping(uint => CharityProject) public charityProjects;
-    uint public totalProjects;
+    
+    uint public totalProjects = 0;
 
     //Constructor => Set's Admin only once at starting
-
     constructor () public {
         admin = Admin({
-            adminName: "Abhijeet Khamkar",
-            adminEmail: "abhijeetkhamkar30@gmail.com",
+            adminName: "root",
+            adminEmail: "root.charitychain.in",
             adminAddress: msg.sender
         });
 
         totalProjects = 0;
-        addNewDonor("d1", "d1.in");
+    }
+
+    event newBenifactorAdded (
+        string benifactorName,
+        address benifactorAddress,
+        string benifactorEmail
+    );
+
+    event newDonorAdded (
+        string donorName,
+        address donorAddress,
+        string donorEmail
+    );
+
+    event newProjectAdded (
+        uint projectId,
+        string projectName,
+        address createrAddress,
+        string projectDescription,
+        uint amountRequire,
+        bool isCompleted,
+        uint amountGot,
+        bool isApproved
+    );
+
+    event returnMessage(
+        bool status,
+        string message
+    );
+
+    function getAdmin() public view returns (address) {
+        return admin.adminAddress;
     }
 
     // Add new Benifactor
     function addNewBenifactor(string memory name, string memory email) public {
+        if(keccak256(abi.encodePacked(benifactors[msg.sender].benifactorName)) 
+        != keccak256(abi.encodePacked(""))) {
+            emit returnMessage(false, "User with this address already exist");
+            return;
+        } 
+
         Benifactor memory newBenifactor = Benifactor({
             benifactorName: name,
             benifactorAddress: msg.sender,
@@ -67,16 +106,8 @@ contract Hello {
         });
 
         benifactors[msg.sender] = newBenifactor;
-        //Emmit Event
+        emit newBenifactorAdded(name, msg.sender, email);
     }  
-
-    //Login Benifactor
-    // function loginBenifactor() public view returns (Benifactor memory) {
-    //     return benifactors[msg.sender];
-    //     contract.methods.benifactors(address);
-    //     itn part = contract.methods.donors(address).participatedCount;
-    //     for(int i=0; i<part)  contract.methods.donors(address).participated(i);
-    // }
 
 
     //Add new Donor
@@ -91,14 +122,16 @@ contract Hello {
         });
 
         donors[msg.sender] = newDonor;
-        //Emmit Event
+        emit newDonorAdded(name, msg.sender, email);
     } 
 
     
     //Add new Project
     function addNewProject(string memory name, string memory desc, uint amtReq) public {
+        totalProjects += 1;
 
         CharityProject memory newProject = CharityProject({
+            projectId: totalProjects,
             projectName : name,
             createrAddress : msg.sender,
             projectDescription : desc,
@@ -108,9 +141,10 @@ contract Hello {
             isApproved: false
         });
 
-        totalProjects += 1;
         charityProjects[totalProjects] = newProject;
-        //Emmit Event
-    } 
+        emit newProjectAdded(totalProjects, name, msg.sender, desc, amtReq, false, 0, false);
+    }
+
+    
 
 }
