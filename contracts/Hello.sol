@@ -82,6 +82,17 @@ contract Hello {
         bool isApproved
     );
 
+    event projectApproved (
+        uint projectId,
+        string projectName,
+        address createrAddress,
+        string projectDescription,
+        uint amountRequire,
+        bool isCompleted,
+        uint amountGot,
+        bool isApproved
+    );
+
     event returnMessage(
         bool status,
         string message
@@ -145,6 +156,26 @@ contract Hello {
         emit newProjectAdded(totalProjects, name, msg.sender, desc, amtReq, false, 0, false);
     }
 
+
+
+    function approvProject(uint id) public {
+
+        CharityProject memory newProject = CharityProject({
+            projectId: id,
+            projectName : charityProjects[id].projectName,
+            createrAddress : charityProjects[id].createrAddress,
+            projectDescription : charityProjects[id].projectDescription,
+            amountRequire : charityProjects[id].amountRequire,
+            isCompleted: charityProjects[id].isCompleted,
+            amountGot: charityProjects[id].amountGot,
+            isApproved: true
+        });
+
+        charityProjects[id] = newProject;
+
+        emit projectApproved(id, charityProjects[id].projectName, charityProjects[id].createrAddress,
+         charityProjects[id].projectDescription, charityProjects[id].amountRequire, charityProjects[id].isCompleted, charityProjects[id].amountGot, true);
+    }
     
 
 }
