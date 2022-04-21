@@ -56,7 +56,20 @@ contract Hello {
             adminAddress: msg.sender
         });
 
-        totalProjects = 0;
+        totalProjects = 1;
+
+        CharityProject memory newProject = CharityProject({
+            projectId: totalProjects,
+            projectName : "name",
+            createrAddress : msg.sender,
+            projectDescription : "desc",
+            amountRequire : 0,
+            isCompleted: false,
+            amountGot: 0,
+            isApproved: false
+        });
+
+        charityProjects[totalProjects] = newProject;
     }
 
     event newBenifactorAdded (
