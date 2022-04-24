@@ -29,7 +29,7 @@ contract Hello {
     struct CharityProject{
         uint projectId;
         string projectName;
-        address createrAddress;
+        address payable createrAddress;
         string projectDescription;
         uint amountRequire;
         bool isCompleted;
@@ -74,7 +74,7 @@ contract Hello {
 
     event newBenifactorAdded (
         string benifactorName,
-        address benifactorAddress,
+        address payable benifactorAddress,
         string benifactorEmail
     );
 
@@ -87,7 +87,7 @@ contract Hello {
     event newProjectAdded (
         uint projectId,
         string projectName,
-        address createrAddress,
+        address payable createrAddress,
         string projectDescription,
         uint amountRequire,
         bool isCompleted,
@@ -189,6 +189,33 @@ contract Hello {
         emit projectApproved(id, charityProjects[id].projectName, charityProjects[id].createrAddress,
          charityProjects[id].projectDescription, charityProjects[id].amountRequire, charityProjects[id].isCompleted, charityProjects[id].amountGot, true);
     }
-    
+
+
+    function donateEther(address payable to, uint id) public payable {
+        
+        to.transfer(msg.value);
+        
+        uint eth = msg.value / 1000000000000000000;
+        uint amtGot = eth + charityProjects[id].amountGot;
+        bool isCom = amtGot == charityProjects[id].amountRequire;
+
+        CharityProject memory newProject = CharityProject({
+            projectId: id,
+            projectName : charityProjects[id].projectName,
+            createrAddress : charityProjects[id].createrAddress,
+            projectDescription : charityProjects[id].projectDescription,
+            amountRequire : charityProjects[id].amountRequire,
+            isCompleted: isCom,
+            amountGot: amtGot,
+            isApproved: true
+        });
+
+        charityProjects[id] = newProject;
+    }
+
+    function donate(uint pId) public payable {
+        charityProjects[pId].createrAddress.transfer(msg.value);
+    }
+
 
 }
