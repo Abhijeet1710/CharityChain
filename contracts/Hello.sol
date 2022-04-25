@@ -51,8 +51,8 @@ contract Hello {
     //Constructor => Set's Admin only once at starting
     constructor () public {
         admin = Admin({
-            adminName: "root",
-            adminEmail: "root.charitychain.in",
+            adminName: "admin",
+            adminEmail: "admin@charitychain.in",
             adminAddress: msg.sender
         });
 
