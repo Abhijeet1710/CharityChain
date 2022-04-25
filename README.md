@@ -2,18 +2,18 @@
 
 ### Steps to Run CharityChain Application in your machine :
 
-- **Prerequisites** :
+- **Prerequisits** :
+**This applications must be installed in your machine**
 
-1.  Node Js installed
-2. Truffle Installed
-3. Ganache Installed
+1.  Node Js
+2. Truffle
+3. Ganache
 
-- **Steps**
+- **Steps to follow :**
 
 1. Clone [CharityChain](https://github.com/Abhijeet1710/CharityChain "CharityChain") repository.
 2. Go inside CharityChain folder and run command : npm install
-3. Clone my-project [repository](https://github.com/Abhijeet1710/my-project/ "repository") into CharityChain folder in place of already existing my-project folder.
+3. Clone [my-project](https://github.com/Abhijeet1710/my-project/ "my-project") repository into CharityChain folder in place of already existing my-project folder.
 4. Go inside my-project folder and run command : npm install
 5. Run Ganache
-6. Go inside my-project folder and Run command : npm run start
-7. Go inside CharityChain folder and Run command : truffle migrate --reset
+6. Run command : npm run start
