@@ -15,4 +15,5 @@
 3. Clone my-project [repository](https://github.com/Abhijeet1710/my-project/ "repository") into CharityChain folder in place of already existing my-project folder.
 4. Go inside my-project folder and run command : npm install
 5. Run Ganache
-6. Run command : npm run start
+6. Go inside my-project folder and Run command : npm run start
+7. Go inside CharityChain folder and Run command : truffle migrate --reset
